@@ -1,0 +1,12 @@
+package com.hotel.booking.exception;
+
+public class ReservationStartDateHasPassedException extends HrsException {
+    public ReservationStartDateHasPassedException() {
+        super("Reservation Start Date has passed");
+    }
+
+    @Override
+    public String getErrorCode() {
+        return "reservation_start_date_has_passed";
+    }
+}

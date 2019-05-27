@@ -8,12 +8,11 @@ import com.hotel.booking.exception.ReservationStartDateHasPassedException;
 import com.hotel.booking.repository.ReservationRepository;
 import com.hotel.booking.repository.RoomTypeRepository;
 import com.hotel.booking.validator.ReservationValidationHelper;
-import com.hotel.booking.viewmodel.ReservationVOModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
@@ -29,18 +28,19 @@ public class ReservationService {
     }
 
     @Transactional
-    public Reservation create(ReservationVOModel request) {
+    public Reservation create(Reservation request) {
         ReservationValidationHelper.validateReservationTime(request.getStartDate(), request.getEndDate());
-
         validateRoomAvailability(request);
 
-        final Reservation reservation = new Reservation();
+        Reservation reservation = new Reservation();
         reservation.setRoomTypeId(request.getRoomTypeId());
         reservation.setCustomerId(request.getCustomerId());
         reservation.setQuantity(request.getQuantity());
         reservation.setStartDate(request.getStartDate());
         reservation.setEndDate(request.getEndDate());
         reservation.setCancelled(Boolean.FALSE);
+        reservation.setCreatedAt(request.getCreatedAt());
+        reservation.setUpdatedAt(request.getUpdatedAt());
 
         return reservationRepository.save(reservation);
     }
@@ -50,34 +50,36 @@ public class ReservationService {
     }
 
     public Reservation find(Integer id) {
-        return reservationRepository.findByIdAndAndCancelled(id, Boolean.FALSE)
+        return reservationRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(
                         String.format("Reservation with id %d is not found or it has been cancelled", id)));
     }
 
-    public Reservation findForUpdate(Integer id) {
-        return reservationRepository.findByIdAndAndCancelledForUpdate(id, Boolean.FALSE)
+    private Reservation findForUpdate(Integer id) {
+        return reservationRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(
                         String.format("Reservation with id %d is not found or it has been cancelled", id)));
     }
 
     @Transactional
-    public Reservation update(Integer id, ReservationVOModel request) {
+    public Reservation update(Integer id, Reservation request) {
         ReservationValidationHelper.validateReservationTime(request.getStartDate(), request.getEndDate());
+        validateRoomAvailability(request);
 
         final Reservation reservation = findForUpdate(id);
 
-        if (ZonedDateTime.now().isAfter(reservation.getStartDate())) {
+        if (LocalDate.now().isAfter(reservation.getStartDate())) {
             throw new ReservationStartDateHasPassedException();
         }
 
-        final RoomType currentRoomType = getRoomType(reservation.getRoomTypeId());
+/*        final RoomType currentRoomType = roomTypeService.findById(reservation.getRoomTypeId());
 
         if (!request.getRoomTypeId().equals(currentRoomType.getId())) {
             validateRoomAvailability(request);
             reservation.setRoomTypeId(request.getRoomTypeId());
-        }
+        }*/
 
+        reservation.setRoomTypeId(request.getRoomTypeId());
         reservation.setCustomerId(request.getCustomerId());
         reservation.setQuantity(request.getQuantity());
         reservation.setStartDate(request.getStartDate());
@@ -95,13 +97,12 @@ public class ReservationService {
         return reservationRepository.save(reservation);
     }
 
-    private void validateRoomAvailability(ReservationVOModel request) {
-        final RoomType roomType = getRoomType(request.getRoomTypeId());
-
-        final List<Reservation> reservations = reservationRepository.find(roomType.getId(),
+    private void validateRoomAvailability(Reservation request) {
+        RoomType roomType = getRoomType(request.getRoomTypeId());
+        List<Reservation> reservations = reservationRepository.find(roomType.getId(),
                 request.getStartDate(), request.getEndDate());
 
-        final Integer reservedQuantity = reservations.stream()
+        Integer reservedQuantity = reservations.stream()
                 .mapToInt(Reservation::getQuantity)
                 .sum();
 
@@ -113,5 +114,10 @@ public class ReservationService {
     private RoomType getRoomType(Integer id) {
         return roomTypeRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException(RoomType.class, id.toString()));
+    }
+
+    public void deleteReservation(Integer id) {
+        find(id);
+        reservationRepository.deleteById(id);
     }
 }

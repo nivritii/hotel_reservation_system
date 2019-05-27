@@ -1,6 +1,6 @@
 package com.hotel.booking.entitymodel;
 
-import com.hotel.booking.util.ZonedDateTimeConverter;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -8,7 +8,9 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 
 @Entity
 @Table(name = "reservation")
@@ -20,29 +22,31 @@ public class Reservation {
     private Integer id;
 
     @NotNull
+    @Column(name="room_type_id")
     private Integer roomTypeId;
 
     @NotNull
+    @Column(name="customer_id")
     private Integer customerId;
 
     @NotNull
     private Integer quantity;
 
-    @Convert(converter = ZonedDateTimeConverter.class)
-    private ZonedDateTime startDate;
+    @JsonFormat(pattern="yyyy-MM-dd")
+    @Column(name="start_date")
+    private LocalDate startDate;
 
-    @Convert(converter = ZonedDateTimeConverter.class)
-    private ZonedDateTime endDate;
+    @JsonFormat(pattern="yyyy-MM-dd")
+    @Column(name="end_date")
+    private LocalDate endDate;
 
     private Boolean cancelled;
 
-    @Convert(converter = ZonedDateTimeConverter.class)
     @CreatedDate
-    private ZonedDateTime createdAt;
+    private LocalDateTime createdAt;
 
-    @Convert(converter = ZonedDateTimeConverter.class)
     @LastModifiedDate
-    private ZonedDateTime updatedAt;
+    private LocalDateTime updatedAt;
 
     public Integer getId() {
         return id;
@@ -76,19 +80,19 @@ public class Reservation {
         this.quantity = quantity;
     }
 
-    public ZonedDateTime getStartDate() {
+    public LocalDate getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(ZonedDateTime startDate) {
+    public void setStartDate(LocalDate startDate) {
         this.startDate = startDate;
     }
 
-    public ZonedDateTime getEndDate() {
+    public LocalDate getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(ZonedDateTime endDate) {
+    public void setEndDate(LocalDate endDate) {
         this.endDate = endDate;
     }
 
@@ -100,19 +104,19 @@ public class Reservation {
         this.cancelled = cancelled;
     }
 
-    public ZonedDateTime getCreatedAt() {
+    public LocalDateTime getCreatedAt() {
         return createdAt;
     }
 
-    public void setCreatedAt(ZonedDateTime createdAt) {
+    public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
 
-    public ZonedDateTime getUpdatedAt() {
+    public LocalDateTime getUpdatedAt() {
         return updatedAt;
     }
 
-    public void setUpdatedAt(ZonedDateTime updatedAt) {
+    public void setUpdatedAt(LocalDateTime updatedAt) {
         this.updatedAt = updatedAt;
     }
 
@@ -129,5 +133,20 @@ public class Reservation {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
+    }
+
+    public Reservation(){
+
+    }
+
+    public Reservation(@NotNull Integer roomTypeId, @NotNull Integer customerId, @NotNull Integer quantity,
+                       LocalDate startDate, LocalDate endDate) {
+        this.roomTypeId = roomTypeId;
+        this.customerId = customerId;
+        this.quantity = quantity;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 }

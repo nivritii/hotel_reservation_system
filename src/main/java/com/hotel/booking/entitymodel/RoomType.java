@@ -1,19 +1,12 @@
 package com.hotel.booking.entitymodel;
 
 import java.math.BigDecimal;
-import java.time.ZonedDateTime;
+import java.time.LocalDateTime;
 
-import javax.persistence.Convert;
-import javax.persistence.Entity;
-import javax.persistence.EntityListeners;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
-import com.hotel.booking.util.ZonedDateTimeConverter;
-import org.hibernate.validator.constraints.NotBlank;
+import javax.validation.constraints.NotBlank;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -40,13 +33,11 @@ public class RoomType {
     @NotNull
     private BigDecimal price;
 
-    @Convert(converter = ZonedDateTimeConverter.class)
-    @CreatedDate
-    private ZonedDateTime createdAt;
+     @CreatedDate
+    private LocalDateTime createdAt;
 
-    @Convert(converter = ZonedDateTimeConverter.class)
-    @LastModifiedDate
-    private ZonedDateTime updatedAt;
+     @LastModifiedDate
+    private LocalDateTime updatedAt;
 
     public Integer getId() {
         return id;
@@ -96,22 +87,6 @@ public class RoomType {
         this.price = price;
     }
 
-    public ZonedDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(ZonedDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public ZonedDateTime getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(ZonedDateTime updatedAt) {
-        this.updatedAt = updatedAt;
-    }
-
     @Override
     public String toString() {
         return "RoomType{" +
@@ -124,5 +99,18 @@ public class RoomType {
                 ", createdAt=" + createdAt +
                 ", updatedAt=" + updatedAt +
                 '}';
+    }
+
+    public RoomType(){}
+
+    public RoomType(@NotBlank String type, String description, String image, @NotNull Integer quantity,
+                    @NotNull BigDecimal price) {
+        this.type = type;
+        this.description = description;
+        this.image = image;
+        this.quantity = quantity;
+        this.price = price;
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 }

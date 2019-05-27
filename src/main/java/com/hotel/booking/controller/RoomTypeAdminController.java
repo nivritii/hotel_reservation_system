@@ -1,12 +1,15 @@
 package com.hotel.booking.controller;
 
+import com.hotel.booking.entitymodel.RoomType;
 import com.hotel.booking.service.RoomTypeService;
-import com.hotel.booking.viewmodel.RoomTypeVOModel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-@Controller
+
+@RestController
 @RequestMapping("admin/room-type")
 public class RoomTypeAdminController {
 
@@ -18,17 +21,27 @@ public class RoomTypeAdminController {
     }
 
     @PostMapping("create")
-    public void create(RoomTypeVOModel roomTypeForm) {
-        roomTypeService.save(roomTypeForm);
+    public ResponseEntity<RoomType> create(@Validated @RequestBody RoomType roomType) {
+        return new ResponseEntity<>(roomTypeService.save(roomType), HttpStatus.CREATED);
     }
 
-    @PostMapping("update")
-    public void update(RoomTypeVOModel roomType) {
-        roomTypeService.save(roomType);
+    @PatchMapping("{id}")
+    public ResponseEntity<RoomType> update(@PathVariable Integer id, @Validated @RequestBody RoomType roomType) {
+        return new ResponseEntity<>(roomTypeService.update(id, roomType),HttpStatus.CREATED);
     }
 
-    @GetMapping("delete/{id}")
+    @DeleteMapping("{id}")
     public void delete(@PathVariable Integer id) {
         roomTypeService.delete(id);
+    }
+
+    @GetMapping("{id}")
+    public RoomType getRoomTypeById(@PathVariable Integer id) {
+        return roomTypeService.findById(id);
+    }
+
+    @GetMapping("all")
+    public Iterable<RoomType> getAllRoomTypes() {
+        return roomTypeService.findAll();
     }
 }

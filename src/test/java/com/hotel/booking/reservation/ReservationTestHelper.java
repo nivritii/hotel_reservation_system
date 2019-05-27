@@ -1,23 +1,20 @@
 package com.hotel.booking.reservation;
 
 import com.hotel.booking.entitymodel.Reservation;
-import com.hotel.booking.repository.ReservationRepository;
+import com.hotel.booking.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.time.ZonedDateTime;
+import java.time.LocalDate;
 
 @Component
-public class TestHelper {
+public class ReservationTestHelper {
 
     @Autowired
-    private ReservationRepository reservationRepository;
-
-    public void cleanUp() {
-    }
+    private ReservationService reservationService;
 
     public Integer createReservation(Integer roomTypeId, Integer customerId, Integer quantity,
-                              ZonedDateTime startDate, ZonedDateTime endDate, Boolean cancelled) {
+                              LocalDate startDate, LocalDate endDate, Boolean cancelled) {
         final Reservation reservation = new Reservation();
         reservation.setRoomTypeId(roomTypeId);
         reservation.setCustomerId(customerId);
@@ -26,8 +23,12 @@ public class TestHelper {
         reservation.setEndDate(endDate);
         reservation.setCancelled(cancelled);
 
-        final Reservation newReservation = reservationRepository.save(reservation);
+        final Reservation newReservation = reservationService.create(reservation);
         return newReservation.getId();
+    }
+
+    public void deleteReservation(Integer id) {
+        reservationService.deleteReservation(id);
     }
 
 }

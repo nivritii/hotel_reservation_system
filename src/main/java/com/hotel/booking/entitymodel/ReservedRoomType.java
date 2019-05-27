@@ -1,4 +1,4 @@
-package com.hotel.booking.viewmodel;
+package com.hotel.booking.entitymodel;
 
 import javax.validation.constraints.NotNull;
 
@@ -9,16 +9,6 @@ public class ReservedRoomType {
 
     @NotNull
     private Long reservedQuantity;
-
-    public ReservedRoomType() {
-        super();
-    }
-
-    public ReservedRoomType(@NotNull Integer id, @NotNull Long reservedQuantity) {
-        super();
-        this.id = id;
-        this.reservedQuantity = reservedQuantity;
-    }
 
     public Integer getId() {
         return id;
@@ -36,4 +26,11 @@ public class ReservedRoomType {
         this.reservedQuantity = reservedQuantity;
     }
 
+    public ReservedRoomType(@NotNull Integer id, @NotNull Long reservedQuantity) {
+        this.id = id;
+        this.reservedQuantity = reservedQuantity;
+    }
+
+    public ReservedRoomType() {
+    }
 }

@@ -6,7 +6,7 @@ public abstract class HrsException extends RuntimeException {
 
     public abstract String getErrorCode();
 
-    public HrsException(String message) {
+    HrsException(String message) {
         super(message);
     }
 

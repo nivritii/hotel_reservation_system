@@ -1,7 +1,9 @@
 package com.hotel.booking;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.hotel.booking.reservation.TestHelper;
+import com.hotel.booking.reservation.ReservationTestHelper;
+import com.hotel.booking.customer.CustomerTestHelper;
+import com.hotel.booking.roomtype.RoomTypeTestHelper;
 import io.restassured.RestAssured;
 import io.restassured.internal.mapping.Jackson2Mapper;
 import org.junit.After;
@@ -20,7 +22,13 @@ public class FunctionalTest {
     protected int port;
 
     @Autowired
-    protected TestHelper testHelper;
+    public ReservationTestHelper reservationTestHelper;
+
+    @Autowired
+    public CustomerTestHelper customerTestHelper;
+
+    @Autowired
+    public RoomTypeTestHelper roomTypeTestHelper;
 
     @Before
     public void baseSetup() {
@@ -29,7 +37,5 @@ public class FunctionalTest {
     }
 
     @After
-    public void cleanUp() {
-        testHelper.cleanUp();
-    }
+    public void cleanUp() {}
 }

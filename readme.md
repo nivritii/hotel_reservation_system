@@ -1,12 +1,12 @@
-#HRS
+# HRS
 Hotel Reservation System
 
-##1. Technology Stack
+## 1. Technology Stack
 - Spring Boot Framework
 - Java 8
 - My Sql 8.0
 
-##2. To Run the Program
+## 2. To Run the Program
 1. Import the project as existing Maven Spring Boot project into IDE from hotel_reservation_system folder
 2. Install JDK 1.8
 3. Install MySQL 8.0
@@ -15,7 +15,7 @@ Hotel Reservation System
     - create tables by running Database_Creation sql file
 	- seed databases with inital values from Seed_Datavase sql file
 	
-##3. Project Scope
+## 3. Project Scope
 1. Content Management System backend
 	- Admin can list/create/edit/delete rooms
 2. API created to,
@@ -34,12 +34,12 @@ Hotel Reservation System
 		- If start date is after the end date
 		- If the room type could not be found
 	
-##4. API Documentation
+## 4. API Documentation
 This section describes the available API endpoints with example request and response
 
-###1. Room Type
+### 1. Room Type
 
-####a. get available room types
+#### a. Get available room types
 
 ```
 GET /room-type/available?start=2099-12-31&end=2100-01-03
@@ -65,9 +65,9 @@ Response:
     }
 ]
 ```
-###2. Room Type (admin)
+### 2. Room Type (admin)
 
-####a. create room type
+#### a. Create new room type
 
 ```
 POST /admin/room-type/create
@@ -92,7 +92,7 @@ Response:
 }
 ```
 
-####b. update room type
+#### b. Update room type by id
 ```
 PATCH /admin/room-type/3
 Request body:
@@ -116,12 +116,12 @@ Response:
 }
 ```
 
-####c. delete room type
+#### c. Delete room type by id
 ```
 DELETE /admin/room-type/3
 ```
 
-####d. get room type
+#### d. Get room type by id
 ```
 GET /admin/room-type/1
 ```
@@ -137,7 +137,7 @@ Response:
 }
 ```
 
-####e. get all room types
+#### e. Get all room types
 ```
 GET admin/room-type/all
 ```
@@ -162,9 +162,9 @@ GET admin/room-type/all
 ]
 ```
 
-###3. Customer
+### 3. Customer
 
-####a. create customer
+#### a. Create new customer
 ```
 POST customer/create
 Request body:
@@ -184,7 +184,7 @@ Response body:
 }
 ```
 
-####b. update customer
+#### b. Update customer by id
 ```
 PATCH /customer/2/update
 Request body:
@@ -204,12 +204,12 @@ Response body:
 }
 ```
 
-####c. delete customer
+#### c. Delete customer by id
 ```
 DELETE customer/2/delete
 ```
 
-####d. get customer
+#### d. Get customer by id
 ```
 GET /customer/1
 ```
@@ -223,7 +223,7 @@ Response body:
 }
 ```
 
-####e. get customer by username
+#### e. Get customer by username
 ```
 GET /customer/username/customer
 ```
@@ -237,7 +237,7 @@ Response body:
 }
 ```
 
-####f. get all customers
+#### f. Get all customers
 ```
 GET /customer/all
 ```
@@ -253,9 +253,9 @@ Response body:
 ]
 ```
 
-###4. Reservation
+### 4. Reservation
 
-####a. create reservation
+#### a. Create new reservation
 ```
 POST /reservation/create
 Request body:
@@ -282,9 +282,9 @@ Response body:
 }
 ```
 
-####b. get reservation by id
+#### b. Get reservation by id
 ```
-GET /reservation/119
+GET /reservation/1
 ```
 ```
 Response body:
@@ -301,7 +301,7 @@ Response body:
 }
 ```
 
-####c. get all reservations
+#### c. Get all reservations
 ```
 GET /reservation/all
 ```
@@ -322,7 +322,7 @@ Response body:
 ]
 ```
 
-####d. update reservation
+#### d. Update reservation by id
 ```
 PATCH reservation/1/update
 Request body:
@@ -349,7 +349,7 @@ Response body:
 }
 ```
 
-####e. cancel reservation
+#### e. Cancel reservation by id
 ```
 PATCH /reservation/1/cancel
 ```
@@ -368,10 +368,10 @@ Response body:
 }
 ```
 
-###5. API testing
+### 5. API testing
 API test case are written for all the controller classes checking the API calls and for the verification of the exceptions thrown.
 
-####a. RoomTypeFunctionalTest
+#### a. RoomTypeFunctionalTest
 in project folder(.\hotel_reservation_system\src\test\java\com\hotel\booking\roomtype)
 
 Test Cases
@@ -383,7 +383,7 @@ Test Cases
 Test Result
 ![ALT](./TestCaseResults/RoomTypeFuncationalTestResults.png)
 
-####b. CustomerFunctionalTest
+#### b. CustomerFunctionalTest
 in project folder (.\hotel_reservation_system\src\test\java\com\hotel\booking\customer)
 
 Test Cases
@@ -395,7 +395,7 @@ Test Cases
 Test Result
 ![ALT](./TestCaseResults/CustomerFuncationalTestResults.png)
 
-####b. ReservationFunctionalTest
+#### c. ReservationFunctionalTest
 in project folder(.\hotel_reservation_system\src\test\java\com\hotel\booking\reservation)
 
 Test Cases
